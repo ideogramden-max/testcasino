@@ -1,768 +1,23 @@
-/* ==========================================================================
-   1. VARIABLES & THEME CONFIGURATION
-   ========================================================================== */
-:root {
-    /* --- Основная цветовая палитра (Dark Theme) --- */
-    --bg-body: #0f0f1f;           /* Самый темный фон */
-    --bg-sidebar: #1a1a2e;        /* Фон боковых панелей */
-    --bg-card: #21213a;           /* Фон карточек и блоков */
-    --bg-input: #16162c;          /* Фон инпутов */
-    --bg-hover: #2a2a45;          /* Фон при наведении */
-    
-    /* --- Акцентные цвета (Brand Colors) --- */
-    --primary: #6c5dd3;           /* Основной фиолетовый */
-    --primary-hover: #5a4cb4;
-    --secondary: #ff0055;         /* Акцентный розовый (как лого) */
-    --secondary-hover: #d40046;
-    --accent-cyan: #00e5ff;       /* Циан для баланса */
-    --accent-gold: #ffd700;       /* Золото для побед */
-    --accent-green: #00b894;      /* Зеленый (успех) */
-    --accent-red: #ff4757;        /* Красный (ошибка/проигрыш) */
-
-    /* --- Текст --- */
-    --text-main: #ffffff;
-    --text-muted: #8f90a6;
-    --text-dark: #5c5c75;
-
-    /* --- Градиенты --- */
-    --grad-primary: linear-gradient(135deg, #6c5dd3 0%, #8e44ad 100%);
-    --grad-play-btn: linear-gradient(180deg, #ff0055 0%, #cc0044 100%);
-    --grad-glow: radial-gradient(circle, rgba(108,93,211,0.4) 0%, rgba(0,0,0,0) 70%);
-
-    /* --- Размеры и отступы --- */
-    --header-height: 70px;
-    --sidebar-width: 240px;
-    --chat-width: 300px;
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-full: 9999px;
-
-    /* --- Тени --- */
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-    --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
-    --shadow-neon: 0 0 10px rgba(255, 0, 85, 0.5);
-
-    /* --- Анимации --- */
-    --trans-fast: 0.15s ease;
-    --trans-normal: 0.3s ease;
-}
-
-/* ==========================================================================
-   2. RESET & BASE STYLES
-   ========================================================================== */
-*, *::before, *::after {
+/* Базовые настройки */
+* {
     box-sizing: border-box;
+    user-select: none; /* Запрет выделения текста */
     outline: none;
-}
-
-html {
-    font-size: 16px;
-    height: 100%;
-    -webkit-tap-highlight-color: transparent;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    line-height: 1.5;
+    background-color: #050510; /* Очень темный фон */
+    color: white;
     height: 100vh;
-    overflow: hidden; /* Скроллится только контент внутри */
-    font-feature-settings: "cv11", "ss01";
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: color var(--trans-fast);
-}
-
-ul, ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-button {
-    border: none;
-    background: none;
-    font-family: inherit;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-}
-
-input, select, textarea {
-    font-family: inherit;
-    border: none;
-    background: none;
-    color: inherit;
-}
-
-/* --- Кастомный скроллбар (Webkit) --- */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #33334d;
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #444466;
-}
-
-/* Класс для скрытия скролла, но сохранения функционала */
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* ==========================================================================
-   3. UTILITY CLASSES
-   ========================================================================== */
-.hidden { display: none !important; }
-.flex { display: flex; }
-.center { display: flex; align-items: center; justify-content: center; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-muted { color: var(--text-muted) !important; }
-.text-gold { color: var(--accent-gold) !important; }
-.text-win { color: var(--accent-green) !important; }
-.text-lose { color: var(--text-muted) !important; }
-.text-high { color: #d63031; font-weight: bold; } /* Высокий риск/множитель */
-.text-med { color: #e17055; font-weight: bold; }
-.text-low { color: #fdcb6e; }
-
-/* Иконки SVG */
-.icon {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-/* ==========================================================================
-   4. LAYOUT STRUCTURE (Grid System)
-   ========================================================================== */
-.app-layout {
-    display: grid;
-    grid-template-columns: var(--sidebar-width) 1fr var(--chat-width);
-    grid-template-rows: 100vh;
-    height: 100vh;
-    width: 100vw;
     overflow: hidden;
 }
 
-/* ==========================================================================
-   5. SIDEBAR (LEFT NAVIGATION)
-   ========================================================================== */
-.sidebar {
-    background-color: var(--bg-sidebar);
-    border-right: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-}
-
-.sidebar-header {
-    height: var(--header-height);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.brand-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    font-weight: 800;
-    color: white;
-    letter-spacing: 0.5px;
-}
-
-.brand-link .icon-logo {
-    width: 40px;
-    height: auto;
-    color: var(--secondary);
-}
-
-.brand-text {
-    background: -webkit-linear-gradient(0deg, #fff, #aaa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.sidebar-nav {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 10px;
-}
-
-.nav-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.nav-item {
-    position: relative;
-}
-
-.nav-item.divider {
-    height: 1px;
-    background: rgba(255,255,255,0.05);
-    margin: 10px 0;
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 12px 15px;
-    border-radius: var(--radius-md);
-    color: var(--text-muted);
-    font-weight: 500;
-    transition: all var(--trans-fast);
-}
-
-.nav-link:hover {
-    background-color: var(--bg-hover);
-    color: white;
-    transform: translateX(4px);
-}
-
-.nav-item.active .nav-link {
-    background: rgba(108, 93, 211, 0.15);
-    color: var(--primary);
-    font-weight: 700;
-}
-
-/* Полоска слева у активного пункта */
-.nav-item.active .nav-link::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 60%;
-    background-color: var(--primary);
-    border-radius: 0 4px 4px 0;
-}
-
-.nav-icon {
-    font-size: 18px;
-    width: 24px;
-    text-align: center;
-}
-
-.badge {
-    margin-left: auto;
-    background: var(--secondary);
-    color: white;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.social-links {
-    display: flex;
-    gap: 10px;
-}
-
-.social-link {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-card);
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--text-muted);
-}
-
-.social-link:hover {
-    background: var(--primary);
-    color: white;
-}
-
-.language-selector span {
-    font-size: 12px;
-    color: var(--text-muted);
-    cursor: pointer;
-}
-
-/* ==========================================================================
-   6. MAIN CONTENT AREA
-   ========================================================================== */
-.main-content {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-    background: radial-gradient(circle at 50% 0%, #1e1e35 0%, var(--bg-body) 60%);
-}
-
-/* --- Top Bar (Header) --- */
-.top-bar {
-    height: var(--header-height);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    backdrop-filter: blur(10px);
-    z-index: 9;
-}
-
-.breadcrumbs {
-    font-size: 14px;
-    color: var(--text-muted);
-}
-
-.breadcrumbs span.active {
-    color: white;
-    font-weight: 600;
-}
-
-.user-controls {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* --- Кошелек --- */
-.wallet-display {
-    display: flex;
-    align-items: center;
-    background: var(--bg-card);
-    padding: 6px 6px 6px 16px;
-    border-radius: 30px;
-    border: 1px solid rgba(255,255,255,0.1);
-    gap: 12px;
-}
-
-.wallet-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-
-.currency-label {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-}
-
-.balance-amount {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 700;
-    color: var(--accent-cyan);
-    font-size: 16px;
-    letter-spacing: -0.5px;
-}
-
-.btn-deposit {
-    background: var(--primary);
-    color: white;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    transition: all var(--trans-fast);
-    box-shadow: 0 4px 10px rgba(108, 93, 211, 0.3);
-}
-
-.btn-deposit:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-}
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.icon-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--bg-card);
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--trans-fast);
-    border: 1px solid transparent;
-}
-
-.icon-btn:hover {
-    color: white;
-    background: var(--bg-hover);
-    border-color: rgba(255,255,255,0.1);
-}
-
-/* ==========================================================================
-   7. GAME WRAPPER & CONTROLS
-   ========================================================================== */
-.game-wrapper {
-    flex: 1;
-    display: flex;
-    padding: 30px;
-    gap: 30px;
-    overflow: hidden;
-    max-height: 800px; /* Ограничиваем высоту для десктопа */
-}
-
-/* --- Левая панель настроек игры (Внутри контента) --- */
-.game-controls-sidebar {
-    width: 320px;
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
-    box-shadow: var(--shadow-md);
-    overflow-y: auto;
-}
-
-/* Табы режимов (Manual/Auto) */
-.mode-tabs {
-    background: var(--bg-input);
-    padding: 4px;
-    border-radius: 30px;
-    display: flex;
-    position: relative;
-}
-
-.mode-tab {
-    flex: 1;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-muted);
-    border-radius: 25px;
-    transition: all var(--trans-fast);
-    z-index: 1;
-}
-
-.mode-tab.active {
-    background: #3a3a55;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Инпуты ставок */
-.input-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-
-.input-group {
-    background: var(--bg-input);
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    padding: 2px;
-    transition: border-color var(--trans-fast);
-}
-
-.input-group:focus-within {
-    border-color: var(--primary);
-}
-
-.input-group input {
-    flex: 1;
-    padding: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    min-width: 0;
-}
-
-.input-buttons {
-    display: flex;
-    gap: 2px;
-}
-
-.input-buttons button {
-    width: 40px;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.05);
-}
-
-.input-buttons button:hover {
-    background: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.btn-half { border-radius: 4px 0 0 4px; }
-.btn-double { border-radius: 0 4px 4px 0; }
-
-/* Быстрые ставки */
-.quick-bets {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-}
-
-.quick-bet-btn {
-    background: rgba(255,255,255,0.03);
-    padding: 8px;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dark);
-    transition: all var(--trans-fast);
-}
-
-.quick-bet-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: white;
-}
-
-/* Селекты (Риск, Ряды) */
-.select-group {
-    position: relative;
-    background: var(--bg-input);
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-.select-group select {
-    width: 100%;
-    padding: 12px;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-    font-weight: 600;
-    color: white;
-    z-index: 2;
-    position: relative;
-    background: transparent;
-}
-
-.icon-select {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    pointer-events: none;
-    width: 16px;
-    height: 16px;
-}
-
-/* Большая кнопка ИГРАТЬ */
-.btn-play-big {
-    width: 100%;
-    padding: 20px;
-    border-radius: var(--radius-md);
-    background: var(--grad-play-btn);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3);
-    transition: transform var(--trans-fast), box-shadow var(--trans-fast);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-play-big:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(255, 0, 85, 0.5);
-}
-
-.btn-play-big:active {
-    transform: translateY(1px);
-    box-shadow: 0 5px 10px rgba(255, 0, 85, 0.3);
-}
-
-/* Блик на кнопке */
-.btn-play-big::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-    transform: rotate(45deg);
-    transition: transform 0.5s;
-    opacity: 0;
-}
-
-.btn-play-big:hover::after {
-    opacity: 1;
-    transform: rotate(45deg) translate(50%, 50%);
-}
-
-.btn-text {
-    font-size: 20px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn-subtext {
-    font-size: 11px;
-    opacity: 0.8;
-    margin-top: 2px;
-}
-
-/* Авто-настройки */
-.auto-settings {
-    background: rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: var(--radius-md);
-    margin-top: 10px;
-    border: 1px dashed rgba(255,255,255,0.1);
-}
-
-.auto-settings input {
-    background: var(--bg-input);
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    border: 1px solid transparent;
-}
-
-.auto-settings input:focus {
-    border-color: var(--primary);
-}
-
-.btn-auto {
-    background: var(--primary);
-    box-shadow: 0 5px 15px rgba(108, 93, 211, 0.4);
-    font-size: 16px;
-    padding: 15px;
-    margin-top: 5px;
-}
-
-/* ==========================================================================
-   8. GAME DISPLAY AREA (CANVAS)
-   ========================================================================== */
-.game-display-area {
-    flex: 1;
-    background: #131325;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
-}
-
-/* Статистика поверх игры */
-.game-stats-overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none; /* Чтобы клики проходили сквозь */
-}
-
-.stat-item {
-    background: rgba(0,0,0,0.4);
-    padding: 8px 15px;
-    border-radius: 20px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.stat-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.stat-value {
-    font-weight: bold;
-    font-family: 'Roboto Mono', monospace;
-}
-
-/* Контейнер для Canvas */
-.canvas-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* Множители внизу */
-    padding-bottom: 40px;
-}
-
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-/* Слой множителей (внизу пирамиды) */
-.multipliers-layer {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 20px; /* Отступ от нижнего края канваса */
-}
-
-/* Стиль блоков множителей (генерируются JS, но стили здесь) */
+/* Стили для множителей (генерируются JS) */
 .mult-block {
-    width: 34px;
+    width: 32px;
     height: 24px;
     border-radius: 4px;
     display: flex;
@@ -770,133 +25,79 @@ canvas {
     justify-content: center;
     font-size: 10px;
     font-weight: 800;
-    color: #111; /* Темный текст на ярком фоне читается лучше */
-    box-shadow: 0 3px 0 rgba(0,0,0,0.3); /* Объемный эффект */
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: default;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.3); /* Объем */
     transition: transform 0.1s;
+    cursor: default;
+    animation: popIn 0.3s ease;
 }
 
-.mult-block:hover {
-    transform: translateY(-2px);
+@keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
 }
 
-/* Цвета множителей (классы добавляются JS) */
+/* Цвета множителей (важно для визуализации) */
 .mult-low {
-    background: #ff9f43;
-    box-shadow: 0 3px 0 #cc8e35;
+    background: #f39c12; /* Оранжевый */
+    box-shadow: 0 3px 0 #d35400;
+    color: #000;
 }
 
 .mult-med {
-    background: #ee5253;
-    box-shadow: 0 3px 0 #b33939;
-    color: white;
+    background: #e74c3c; /* Красный */
+    box-shadow: 0 3px 0 #c0392b;
+    color: #fff;
 }
 
 .mult-high {
-    background: #c0392b;
-    box-shadow: 0 3px 0 #962c21;
-    color: white;
-    height: 30px; /* Чуть выше */
-    font-size: 11px;
+    background: #9b59b6; /* Фиолетовый */
+    box-shadow: 0 3px 0 #8e44ad;
+    color: #fff;
 }
 
 .mult-mega {
     background: linear-gradient(45deg, #ff00cc, #333399);
     box-shadow: 0 3px 0 #660066;
     color: white;
-    height: 35px;
-    animation: glowPulse 1.5s infinite;
 }
 
-@keyframes glowPulse {
-    0% { box-shadow: 0 0 5px #ff00cc; }
-    50% { box-shadow: 0 0 20px #ff00cc; }
-    100% { box-shadow: 0 0 5px #ff00cc; }
+/* Эффект нажатия на любую кнопку */
+button:active {
+    transform: scale(0.96);
+    opacity: 0.9;
 }
 
-@keyframes popIn {
-    from { transform: scale(0); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+/* Инпуты */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
 }
 
-/* ==========================================================================
-   9. STATS & HISTORY TABLE
-   ========================================================================== */
-.live-stats-section {
-    background: var(--bg-sidebar); /* Чуть светлее body */
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Для flex-контейнера */
-    flex: 0 0 300px; /* Фиксированная высота или flex-grow */
-    /* В нашем лейауте это нижняя часть main-content?
-       Если мы хотим скролл внутри таблицы, лучше задать фиксированную высоту контейнера
-    */
-    height: 300px;
-    overflow: hidden;
+/* Тосты (Уведомления из ui.js) */
+.toast-container {
+    pointer-events: none;
 }
 
-.stats-tabs {
-    display: flex;
-    gap: 20px;
-    padding: 0 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    background: #151525;
-}
-
-.stat-tab {
-    padding: 15px 0;
+.toast {
+    pointer-events: auto;
     font-size: 14px;
-    color: var(--text-muted);
-    font-weight: 600;
-    position: relative;
-    cursor: pointer;
 }
 
-.stat-tab:hover {
-    color: white;
+/* Попап победы (из ui.js) */
+#win-overlay {
+    pointer-events: none;
 }
 
-.stat-tab.active {
-    color: white;
+.win-popup {
+    backdrop-filter: blur(5px);
 }
 
-.stat-tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--secondary);
-    box-shadow: 0 -2px 10px var(--secondary);
+/* Анимация кнопки Play при ошибке */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
-
-.stats-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.table-header {
-    display: flex;
-    padding: 10px 30px;
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 600;
-    background: rgba(0,0,0,0.1);
-}
-
-.table-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0 15px 0 30px; /* справа меньше для скроллбара */
-}
-
-/* Колонки таблицы */
-.col-game { width: 15%; }
-.col-user { width: 20%; }
-.col-time { width: 15%; }
-.col-bet  
