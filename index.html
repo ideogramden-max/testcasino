@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plinko Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Верхняя панель (Лого и баланс) -->
+        <div class="header">
+            <div class="logo">PLINKO <span class="x-mark">X</span></div>
+            <div class="balance-box">
+                <span id="balance">20000.00</span> DMO
+            </div>
+        </div>
+
+        <!-- Игровое поле (Canvas) -->
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas"></canvas>
+            <!-- Зона множителей (рисуется поверх или внутри канваса, здесь сделаем через DOM для простоты стилизации) -->
+            <div id="multipliers-container" class="multipliers-row"></div>
+        </div>
+
+        <!-- Панель управления -->
+        <div class="control-panel">
+            <div class="bet-controls">
+                <button id="btn-minus" class="circle-btn">-</button>
+                <div class="bet-input-box">
+                    <span id="current-bet">50.00</span> DMO
+                </div>
+                <button id="btn-plus" class="circle-btn">+</button>
+            </div>
+
+            <button id="btn-play" class="play-btn">
+                СДЕЛАТЬ СТАВКУ
+                <span class="subtext">Запустить шарик</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Подключение скриптов в правильном порядке -->
+    <script src="mathematics.js"></script>
+    <script src="ui.js"></script>
+    <script src="gamelogic.js"></script>
+    <script src="panel.js"></script>
+</body>
+</html>
