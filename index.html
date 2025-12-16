@@ -2,369 +2,92 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Plinko X - Официальная игра. Играй и выигрывай с высокими множителями. Provably Fair система.">
-    <meta name="keywords" content="plinko, plinko x, casino, game, gambling, smartsoft, crypto game">
-    <meta name="theme-color" content="#0f0f1f">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <title>Plinko X | Official Game Mirror</title>
-    
-    <!-- Подключение шрифтов (Google Fonts) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Основные стили -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plinko X</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Фавиконки (заглушки) -->
-    <link rel="icon" type="image/png" href="favicon.png">
 </head>
-<body class="theme-dark">
+<body>
 
-    <!-- ========================================== -->
-    <!-- SVG СПРАЙТЫ (Иконки интерфейса) -->
-    <!-- Это увеличивает размер файла, но ускоряет отрисовку -->
-    <!-- ========================================== -->
-    <svg style="display: none;">
-        <symbol id="icon-logo" viewBox="0 0 100 30">
-            <path d="M10,5 L20,25 L30,5 M40,5 L40,25 M50,5 L60,5 M55,5 L55,25 M70,5 L70,25 L80,5 L80,25" stroke="white" stroke-width="3" fill="none"/>
-            <circle cx="90" cy="15" r="5" fill="#ff0055"/>
-        </symbol>
+    <div class="game-container" style="max-width: 500px; margin: 0 auto; background: #0f0f1f; height: 100vh; display: flex; flex-direction: column;">
         
-        <symbol id="icon-wallet" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M21 18V19C21 20.1 20.1 21 19 21H5C3.89 21 3 20.1 3 19V5C3 3.9 3.89 3 5 3H19C20.1 3 21 3.9 21 5V6H12C10.89 6 10 6.9 10 8V16C10 17.1 10.89 18 12 18H21ZM12 16H22V8H12V16ZM16 13.5C15.17 13.5 14.5 12.83 14.5 12C14.5 11.17 15.17 10.5 16 10.5C16.83 10.5 17.5 11.17 17.5 12C17.5 12.83 16.83 13.5 16 13.5Z"/>
-        </symbol>
+        <!-- Верхняя панель -->
+        <div class="header" style="padding: 15px; display: flex; justify-content: space-between; color: white;">
+            <div class="logo" style="font-weight: bold; font-size: 20px;">PLINKO <span style="color: #ff0055;">X</span></div>
+            <div class="wallet-display" style="background: #21213a; padding: 5px 15px; border-radius: 20px;">
+                <span id="balance" style="color: #00e5ff; font-weight: bold;">20000.00</span> DMO
+            </div>
+        </div>
 
-        <symbol id="icon-user" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"/>
-        </symbol>
-
-        <symbol id="icon-settings" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.49l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-        </symbol>
-
-        <symbol id="icon-fairness" viewBox="0 0 24 24">
-             <path fill="currentColor" d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M12,11.99h7c-0.53,4.12-3.28,7.79-7,8.94V12H5V6.3 l7-3.11V11.99z"/>
-        </symbol>
-
-        <symbol id="icon-chat" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,14H6l-2,2V4h16V14z"/>
-        </symbol>
-
-        <symbol id="icon-history" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M13,3c-4.97,0-9,4.03-9,9H1l3.89,3.89L8.78,12H6c0-3.87,3.13-7,7-7s7,3.13,7,7s-3.13,7-7,7c-1.93,0-3.68-0.79-4.94-2.06l-1.42,1.42 C8.27,19.99,10.51,21,13,21c4.97,0,9-4.03,9-9S17.97,3,13,3z M12,8v5l4.28,2.54l0.72-1.21l-3.5-2.08V8H12z"/>
-        </symbol>
-
-        <symbol id="icon-sound-on" viewBox="0 0 24 24">
-             <path fill="currentColor" d="M3,9v6h4l5,5V4L7,9H3z M16.5,12c0-1.77-1.02-3.29-2.5-4.03v8.05C15.48,15.29,16.5,13.77,16.5,12z M14,3.23v2.06c2.89,0.86,5,3.54,5,6.71 s-2.11,5.85-5,6.71v2.06c4.01-0.91,7-4.49,7-8.77S18.01,4.14,14,3.23z"/>
-        </symbol>
-
-        <symbol id="icon-close" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-        </symbol>
-        
-        <symbol id="icon-arrow-down" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-        </symbol>
-    </svg>
-
-    <!-- ========================================== -->
-    <!-- ОСНОВНОЙ КОНТЕЙНЕР ПРИЛОЖЕНИЯ -->
-    <!-- ========================================== -->
-    <div id="app" class="app-layout">
-        
-        <!-- ЛЕВАЯ КОЛОНКА: Навигация -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="#" class="brand-link">
-                    <svg class="icon icon-logo"><use xlink:href="#icon-logo"></use></svg>
-                    <span class="brand-text">SMARTSOFT</span>
-                </a>
+        <!-- Игровое поле -->
+        <div class="game-display-area" style="flex: 1; position: relative; overflow: hidden;">
+            <div class="game-stats-overlay" style="position: absolute; top: 10px; left: 10px; color: #888; z-index: 5;">
+                Balls: <span id="balls-count" style="color: white;">0</span>
             </div>
             
-            <nav class="sidebar-nav">
-                <ul class="nav-list">
-                    <li class="nav-item active">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">🎮</span>
-                            <span class="nav-text">Plinko X</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">🚀</span>
-                            <span class="nav-text">JetX</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">💣</span>
-                            <span class="nav-text">Mines</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">🎡</span>
-                            <span class="nav-text">Wheel</span>
-                        </a>
-                    </li>
-                    <li class="nav-item divider"></li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">🏆</span>
-                            <span class="nav-text">Турниры</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <span class="nav-icon">🎁</span>
-                            <span class="nav-text">Бонусы</span>
-                            <span class="badge">NEW</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="social-links">
-                    <a href="#" class="social-link telegram">TG</a>
-                    <a href="#" class="social-link discord">DS</a>
-                </div>
-                <div class="language-selector">
-                    <span>RU</span>
-                </div>
+            <div class="canvas-container" style="width: 100%; height: 100%; position: relative;">
+                <canvas id="gameCanvas"></canvas>
+                <!-- Контейнер для множителей (рисуется поверх канваса внизу) -->
+                <div id="multipliers-container" class="multipliers-layer" style="position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 4px;"></div>
             </div>
-        </aside>
+        </div>
 
-        <!-- ЦЕНТРАЛЬНАЯ ЧАСТЬ: Игровое поле -->
-        <main class="main-content">
+        <!-- Управление -->
+        <div class="control-panel" style="padding: 20px; background: #1a1a2e; border-top: 1px solid #333;">
             
-            <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
-            <header class="top-bar">
-                <div class="breadcrumbs">
-                    <span>Casino</span> / <span>Arcade</span> / <span class="active">Plinko X</span>
-                </div>
-                
-                <div class="user-controls">
-                    <div class="wallet-display">
-                        <svg class="icon"><use xlink:href="#icon-wallet"></use></svg>
-                        <div class="wallet-info">
-                            <span class="currency-label">Баланс (DMO)</span>
-                            <span id="balance" class="balance-amount">20000.00</span>
-                        </div>
-                        <button class="btn-deposit">Пополнить</button>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="icon-btn" title="Звук">
-                            <svg class="icon"><use xlink:href="#icon-sound-on"></use></svg>
-                        </button>
-                        <button class="icon-btn" title="Честность">
-                            <svg class="icon"><use xlink:href="#icon-fairness"></use></svg>
-                        </button>
-                        <button class="icon-btn profile-btn">
-                            <svg class="icon"><use xlink:href="#icon-user"></use></svg>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- ОБЛАСТЬ ИГРЫ -->
-            <div class="game-wrapper">
-                
-                <!-- Боковая панель управления ставками (внутри игры) -->
-                <div class="game-controls-sidebar">
-                    
-                    <!-- Переключатель режимов -->
-                    <div class="mode-tabs">
-                        <button class="mode-tab active" data-mode="manual">Manual</button>
-                        <button class="mode-tab" data-mode="auto">Auto</button>
-                    </div>
-
-                    <!-- Форма ставки -->
-                    <div class="bet-section">
-                        <label class="input-label">
-                            <span>Ставка</span>
-                            <span class="max-bet-label">Max: 1000.00</span>
-                        </label>
-                        
-                        <div class="input-group">
-                            <input type="number" id="bet-input" value="50.00" min="0.10" max="1000">
-                            <div class="input-buttons">
-                                <button class="btn-half">½</button>
-                                <button class="btn-double">2x</button>
-                            </div>
-                        </div>
-
-                        <div class="quick-bets">
-                            <button class="quick-bet-btn" data-val="10">10</button>
-                            <button class="quick-bet-btn" data-val="50">50</button>
-                            <button class="quick-bet-btn" data-val="100">100</button>
-                            <button class="quick-bet-btn" data-val="500">500</button>
-                        </div>
-                    </div>
-
-                    <!-- Настройки Plinko (Риск, Ряды) -->
-                    <div class="game-settings-section">
-                        <label class="input-label">Риск</label>
-                        <div class="select-group">
-                            <select id="risk-select">
-                                <option value="low">Низкий</option>
-                                <option value="normal" selected>Нормальный</option>
-                                <option value="high">Высокий</option>
-                            </select>
-                            <svg class="icon-select"><use xlink:href="#icon-arrow-down"></use></svg>
-                        </div>
-
-                        <label class="input-label">Кол-во рядов</label>
-                        <div class="select-group">
-                            <select id="rows-select">
-                                <option value="8">8 Рядов</option>
-                                <option value="10">10 Рядов</option>
-                                <option value="12">12 Рядов</option>
-                                <option value="14" selected>14 Рядов</option>
-                                <option value="16">16 Рядов</option>
-                            </select>
-                            <svg class="icon-select"><use xlink:href="#icon-arrow-down"></use></svg>
-                        </div>
-                    </div>
-
-                    <!-- Кнопка ИГРАТЬ -->
-                    <button id="btn-play" class="btn-play-big">
-                        <span class="btn-text">СДЕЛАТЬ СТАВКУ</span>
-                        <span class="btn-subtext">Нажми Enter</span>
-                    </button>
-
-                    <!-- Авто-настройки (Скрыты по умолчанию) -->
-                    <div id="auto-settings" class="auto-settings hidden">
-                        <label class="input-label">Количество ставок</label>
-                        <input type="number" value="0" placeholder="0 = бесконечно">
-                        
-                        <label class="input-label">Стоп если выигрыш >=</label>
-                        <input type="number" placeholder="0.00">
-                        
-                        <label class="input-label">Стоп если проигрыш >=</label>
-                        <input type="number" placeholder="0.00">
-                        
-                        <button id="btn-auto-start" class="btn-play-big btn-auto">ЗАПУСТИТЬ АВТО</button>
-                    </div>
-
-                </div>
-
-                <!-- КАНВАС ИГРЫ (Визуализация) -->
-                <div class="game-display-area">
-                    <!-- Статистика сверху -->
-                    <div class="game-stats-overlay">
-                        <div class="stat-item">
-                            <span class="stat-label">Макс. выигрыш</span>
-                            <span class="stat-value text-gold">x1000</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Текущие шары</span>
-                            <span class="stat-value" id="balls-count">0</span>
-                        </div>
-                    </div>
-
-                    <!-- Контейнер Canvas -->
-                    <div class="canvas-container">
-                        <canvas id="gameCanvas"></canvas>
-                        
-                        <!-- Слой множителей (для верстки, JS будет их двигать или перерисовывать) -->
-                        <div id="multipliers-container" class="multipliers-layer">
-                            <!-- JS сгенерирует блоки здесь -->
-                            <!-- Пример статического блока для понимания структуры -->
-                            <!-- <div class="mult-block x100">100x</div> -->
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Настройки рядов и риска -->
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <select id="risk-select" style="flex: 1; padding: 10px; background: #16162c; color: white; border: 1px solid #333; border-radius: 8px;">
+                    <option value="low">Низкий</option>
+                    <option value="normal" selected>Нормальный</option>
+                    <option value="high">Высокий</option>
+                </select>
+                <select id="rows-select" style="flex: 1; padding: 10px; background: #16162c; color: white; border: 1px solid #333; border-radius: 8px;">
+                    <option value="8">8 Рядов</option>
+                    <option value="10">10 Рядов</option>
+                    <option value="12">12 Рядов</option>
+                    <option value="14" selected>14 Рядов</option>
+                    <option value="16">16 Рядов</option>
+                </select>
             </div>
 
-            <!-- НИЖНЯЯ ПАНЕЛЬ: История ставок и Живая статистика -->
-            <section class="live-stats-section">
-                <div class="stats-tabs">
-                    <button class="stat-tab active" data-target="my-bets">Мои ставки</button>
-                    <button class="stat-tab" data-target="all-bets">Все ставки</button>
-                    <button class="stat-tab" data-target="high-rollers">Хайроллеры</button>
-                    <button class="stat-tab" data-target="contest">Конкурс</button>
-                </div>
+            <!-- Ввод ставки -->
+            <div class="bet-controls" style="display: flex; gap: 5px; margin-bottom: 15px;">
+                <button class="btn-half" style="background: #333; color: white; padding: 10px; border-radius: 5px;">½</button>
+                <input type="number" id="bet-input" value="50.00" style="flex: 1; background: #0f0f1f; border: 1px solid #333; color: white; text-align: center; font-size: 18px; border-radius: 5px;">
+                <button class="btn-double" style="background: #333; color: white; padding: 10px; border-radius: 5px;">2x</button>
+            </div>
+            
+            <div class="quick-bets" style="display: flex; gap: 5px; margin-bottom: 15px;">
+                <button class="quick-bet-btn" data-val="10" style="flex:1; background: #222; color:#aaa; border:none; padding: 5px;">10</button>
+                <button class="quick-bet-btn" data-val="100" style="flex:1; background: #222; color:#aaa; border:none; padding: 5px;">100</button>
+                <button class="quick-bet-btn" data-val="500" style="flex:1; background: #222; color:#aaa; border:none; padding: 5px;">500</button>
+            </div>
 
-                <div class="stats-content">
-                    <div class="table-header">
-                        <div class="col-game">Игра</div>
-                        <div class="col-user">Игрок</div>
-                        <div class="col-time">Время</div>
-                        <div class="col-bet">Ставка</div>
-                        <div class="col-mult">Множитель</div>
-                        <div class="col-payout">Выплата</div>
-                    </div>
+            <!-- Большая кнопка -->
+            <button id="btn-play" class="btn-play-big" style="width: 100%; padding: 15px; background: linear-gradient(90deg, #ff0055, #cc0044); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 0 15px rgba(255,0,85,0.4);">
+                СДЕЛАТЬ СТАВКУ
+            </button>
+        </div>
 
-                    <div class="table-body custom-scroll" id="history-table">
-                        <!-- СТАТИЧЕСКИЕ ДАННЫЕ ДЛЯ ПРИМЕРА ЗАПОЛНЕННОСТИ (50 строк) -->
-                        <!-- Ряд 1 -->
-                        <div class="table-row win">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">User123***</div>
-                            <div class="col-time">12:42:05</div>
-                            <div class="col-bet">50.00</div>
-                            <div class="col-mult text-high">20x</div>
-                            <div class="col-payout text-win">1000.00</div>
-                        </div>
-                        <!-- Ряд 2 -->
-                        <div class="table-row lose">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">Alex***</div>
-                            <div class="col-time">12:42:03</div>
-                            <div class="col-bet">100.00</div>
-                            <div class="col-mult text-low">0.2x</div>
-                            <div class="col-payout text-lose">20.00</div>
-                        </div>
-                        <!-- Ряд 3 -->
-                        <div class="table-row">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">Winner777</div>
-                            <div class="col-time">12:41:59</div>
-                            <div class="col-bet">20.00</div>
-                            <div class="col-mult text-med">4x</div>
-                            <div class="col-payout text-win">80.00</div>
-                        </div>
-                        <!-- Ряд 4 -->
-                        <div class="table-row lose">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">Guest_99</div>
-                            <div class="col-time">12:41:55</div>
-                            <div class="col-bet">10.00</div>
-                            <div class="col-mult text-low">0.2x</div>
-                            <div class="col-payout">2.00</div>
-                        </div>
-                        <!-- Ряд 5 -->
-                        <div class="table-row lose">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">DmitryK</div>
-                            <div class="col-time">12:41:50</div>
-                            <div class="col-bet">500.00</div>
-                            <div class="col-mult text-low">0.2x</div>
-                            <div class="col-payout">100.00</div>
-                        </div>
-                        <!-- ... Повторяем строки для объема ... -->
-                        <div class="table-row win">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">LuckyGuy</div>
-                            <div class="col-time">12:41:45</div>
-                            <div class="col-bet">50.00</div>
-                            <div class="col-mult text-high">100x</div>
-                            <div class="col-payout text-win">5000.00</div>
-                        </div>
-                        <!-- (Представьте здесь еще 40 строк кода для достижения объема) -->
-                         <div class="table-row">
-                            <div class="col-game">Plinko X</div>
-                            <div class="col-user hidden-name">Bot_01</div>
-                            <div class="col-time">12:41:40</div>
-                            <div class="col-bet">5.00</div>
-                            <div class="col-mult">2x</div>
-                            <div class="col-payout">10.00</div>
-                        </div>
-                         <div class=
+        <!-- Скрытые элементы (нужны для JS чтобы не было ошибок) -->
+        <div style="display: none;">
+            <div id="history-table"></div>
+            <div class="chat-messages"></div>
+            <div class="chat-input-area"><input type="text"></div>
+            <button class="btn-send"></button>
+            <div id="auto-settings">
+                <input><input><input>
+                <button id="btn-auto-start"></button>
+            </div>
+            <div class="mode-tab" data-mode="manual"></div>
+            <div class="mode-tab" data-mode="auto"></div>
+        </div>
+    </div>
+
+    <!-- Порядок подключения важен! -->
+    <script src="mathematics.js"></script>
+    <script src="ui.js"></script>
+    <script src="gamelogic.js"></script>
+    <script src="panel.js"></script>
+</body>
+</html>
